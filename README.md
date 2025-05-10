@@ -123,6 +123,7 @@ https://github.com/spbsupprt/Bridges-tunnels-and-VPN/blob/main/ras.yml
 
 
 Устанавливаем openvnp на локальный хост и делаем финальную проверку:
+
 ```
 root@NSK-WN-000068:~# ping -c10 10.10.10.1
 PING 10.10.10.1 (10.10.10.1) 56(84) bytes of data.
