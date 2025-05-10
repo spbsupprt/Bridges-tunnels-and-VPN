@@ -63,7 +63,7 @@
 
 - name: Generate openvpn server config
   template:
-    src: server.conf.j2
+    src: templates/server.conf.j2
     dest: /etc/openvpn/server.conf
     mode: 0600
   notify: Restart OpenVPN
@@ -75,7 +75,7 @@
 
 - name: Generate openvpn service
   template:
-    src: openvpn@.service.j2
+    src: templates/openvpn@.service.j2
     dest: /etc/systemd/system/openvpn@.service
 - name: Перезагрузка демона systemd
   systemd:
@@ -89,7 +89,7 @@
 
 - name: Generate client config
   template:
-    src: client.ovpn.j2
+    src: templates/client.ovpn.j2
     dest: "/tmp/client.ovpn"
 
 - name: Send keys and configs to managed host
