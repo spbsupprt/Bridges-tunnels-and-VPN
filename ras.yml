@@ -101,7 +101,7 @@
   loop: "{{ files_to_fetch }}"
   vars:
     files_to_fetch:
-      - { src: '/etc/openvpn/pki/ca.crt', dest: '{{ playbook_dir }}/config/ca.crt' }
-      - { src: '/etc/openvpn/pki/issued/client.crt', dest: '{{ playbook_dir }}/config/client.crt' }
-      - { src: '/etc/openvpn/pki/private/client.key', dest: '{{ playbook_dir }}/config/client.key', mode: '0600' }
-      - { src: '/tmp/client.ovpn', dest: '{{ playbook_dir }}/config/client.ovpn' }
+      - { src: '/etc/openvpn/pki/ca.crt', dest: 'templates/ca.crt' }
+      - { src: '/etc/openvpn/pki/issued/client.crt', dest: 'templates/client.crt' }
+      - { src: '/etc/openvpn/pki/private/client.key', dest: 'templates/client.key', mode: '0600' }
+      - { src: '/tmp/client.ovpn', dest: 'templates/client.ovpn' }
