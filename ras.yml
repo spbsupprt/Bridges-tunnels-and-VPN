@@ -3,105 +3,105 @@
   hosts: all
   gather_facts: true
   become: yes
-  
-- name: Restart OpenVPN
-  systemd:
-    name: openvpn@server
-    state: restarted  
-  
-- name: Install packages
-  apt:
-    update_cache: yes
-    name:
-      - openvpn
-      - easy-rsa
-    state: present
-
-- name: Create work dirs
-  file:
-    path: "{{ item }}"
-    state: directory
-    mode: 0700
-  loop:
-    - "/etc/openvpn/pki"
-    - "/etc/openvpn/client"
-
-- name: Intit PKI
-  shell: |
-    /usr/share/easy-rsa/easyrsa --batch init-pki
-  args:
-    chdir: /etc/openvpn
-    creates: "/etc/openvpn/pki/private/ca.key"
-  environment:
-    EASYRSA_KEY_SIZE: "4096"
-    EASYRSA_CA_EXPIRE: "3650"
-    EASYRSA_CERT_EXPIRE: "3650"
-
-- name: Generate CA
-  shell: |
-    /usr/share/easy-rsa/easyrsa --batch build-ca nopass
-  args:
-    chdir: /etc/openvpn
-    creates: "/etc/openvpn/pki/ca.crt"
-  environment:
-    EASYRSA_BATCH: "1"
-
-- name: Generate server certificates
-  shell: |
-    /usr/share/easy-rsa/easyrsa --batch build-server-full server nopass
-    /usr/share/easy-rsa/easyrsa gen-dh
-  args:
-    chdir: /etc/openvpn
-    creates: "/etc/openvpn/pki/issued/server.crt"
-
-- name: Generate client certificates
-  shell: |
-    /usr/share/easy-rsa/easyrsa --batch build-client-full client nopass
-  args:
-    chdir: /etc/openvpn
-    creates: "/etc/openvpn/pki/issued/client.crt"
-
-- name: Generate openvpn server config
-  template:
-    src: templates/server.conf.j2
-    dest: /etc/openvpn/server.conf
-    mode: 0600
-  notify: Restart OpenVPN
-
-- name: Make client route
-  copy:
-    dest: "/etc/openvpn/client/client"
-    content: "route 10.10.10.0 255.255.255.0"
-
-- name: Generate openvpn service
-  template:
-    src: templates/openvpn@.service.j2
-    dest: /etc/systemd/system/openvpn@.service
-- name: Перезагрузка демона systemd
-  systemd:
-    daemon_reload: yes
-
-- name: Enable and start systemd service
-  systemd:
-    name: openvpn@server
-    enabled: yes
-    state: started
-
-- name: Generate client config
-  template:
-    src: templates/client.ovpn.j2
-    dest: "/tmp/client.ovpn"
-
-- name: Send keys and configs to managed host
-  fetch:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    flat: yes
-    mode: "{{ item.mode | default('0644') }}"
-  loop: "{{ files_to_fetch }}"
-  vars:
-    files_to_fetch:
-      - { src: '/etc/openvpn/pki/ca.crt', dest: 'templates/ca.crt' }
-      - { src: '/etc/openvpn/pki/issued/client.crt', dest: 'templates/client.crt' }
-      - { src: '/etc/openvpn/pki/private/client.key', dest: 'templates/client.key', mode: '0600' }
-      - { src: '/tmp/client.ovpn', dest: 'templates/client.ovpn' }
+  tasks:
+    - name: Restart OpenVPN
+      systemd:
+        name: openvpn@server
+        state: restarted
+    
+    - name: Install packages
+      apt:
+        update_cache: yes
+        name:
+          - openvpn
+          - easy-rsa
+        state: present
+    
+    - name: Create work dirs
+      file:
+        path: "{{ item }}"
+        state: directory
+        mode: 0700
+      loop:
+        - "/etc/openvpn/pki"
+        - "/etc/openvpn/client"
+    
+    - name: Intit PKI
+      shell: |
+        /usr/share/easy-rsa/easyrsa --batch init-pki
+      args:
+        chdir: /etc/openvpn
+        creates: "/etc/openvpn/pki/private/ca.key"
+      environment:
+        EASYRSA_KEY_SIZE: "4096"
+        EASYRSA_CA_EXPIRE: "3650"
+        EASYRSA_CERT_EXPIRE: "3650"
+    
+    - name: Generate CA
+      shell: |
+        /usr/share/easy-rsa/easyrsa --batch build-ca nopass
+      args:
+        chdir: /etc/openvpn
+        creates: "/etc/openvpn/pki/ca.crt"
+      environment:
+        EASYRSA_BATCH: "1"
+    
+    - name: Generate server certificates
+      shell: |
+        /usr/share/easy-rsa/easyrsa --batch build-server-full server nopass
+        /usr/share/easy-rsa/easyrsa gen-dh
+      args:
+        chdir: /etc/openvpn
+        creates: "/etc/openvpn/pki/issued/server.crt"
+    
+    - name: Generate client certificates
+      shell: |
+        /usr/share/easy-rsa/easyrsa --batch build-client-full client nopass
+      args:
+        chdir: /etc/openvpn
+        creates: "/etc/openvpn/pki/issued/client.crt"
+    
+    - name: Generate openvpn server config
+      template:
+        src: templates/server.conf.j2
+        dest: /etc/openvpn/server.conf
+        mode: 0600
+      notify: Restart OpenVPN
+    
+    - name: Make client route
+      copy:
+        dest: "/etc/openvpn/client/client"
+        content: "route 10.10.10.0 255.255.255.0"
+    
+    - name: Generate openvpn service
+      template:
+        src: templates/openvpn@.service.j2
+        dest: /etc/systemd/system/openvpn@.service
+    - name: Перезагрузка демона systemd
+      systemd:
+        daemon_reload: yes
+    
+    - name: Enable and start systemd service
+      systemd:
+        name: openvpn@server
+        enabled: yes
+        state: started
+    
+    - name: Generate client config
+      template:
+        src: templates/client.ovpn.j2
+        dest: "/tmp/client.ovpn"
+    
+    - name: Send keys and configs to managed host
+      fetch:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        flat: yes
+        mode: "{{ item.mode | default('0644') }}"
+      loop: "{{ files_to_fetch }}"
+      vars:
+        files_to_fetch:
+          - { src: '/etc/openvpn/pki/ca.crt', dest: 'templates/ca.crt' }
+          - { src: '/etc/openvpn/pki/issued/client.crt', dest: 'templates/client.crt' }
+          - { src: '/etc/openvpn/pki/private/client.key', dest: 'templates/client.key', mode: '0600' }
+          - { src: '/tmp/client.ovpn', dest: 'templates/client.ovpn' }
