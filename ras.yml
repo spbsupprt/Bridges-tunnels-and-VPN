@@ -1,4 +1,14 @@
 ---
+- name: OpenVpn Server deploy
+  hosts: all
+  gather_facts: true
+  become: yes
+  
+- name: Restart OpenVPN
+  systemd:
+    name: openvpn@server
+    state: restarted  
+  
 - name: Install packages
   apt:
     update_cache: yes
