@@ -19,6 +19,7 @@
 
 https://github.com/spbsupprt/Bridges-tunnels-and-VPN/blob/main/tun.yml
 
+
 ![image](https://github.com/user-attachments/assets/a848aeef-4961-4e91-80a8-f2292d8f5abf)
 
 
@@ -51,6 +52,9 @@ iperf3 -c 10.10.10.1 -t 40 -i 5
 Применим плейбук:
 
 https://github.com/spbsupprt/Bridges-tunnels-and-VPN/blob/main/tap.yml
+
+
+![image](https://github.com/user-attachments/assets/db5cec74-8766-4e30-879e-2bfcb517c74b)
 
 И сделаем замер:
 
