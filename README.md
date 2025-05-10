@@ -119,7 +119,8 @@ TAP: Мостовые подключения, L2-туннели
 https://github.com/spbsupprt/Bridges-tunnels-and-VPN/blob/main/ras.yml
 
 
-![image](https://github.com/user-attachments/assets/3c69e209-343f-4e89-9cf0-17b2906a14db)
+![image](https://github.com/user-attachments/assets/2fcb9111-e816-4d2e-90e0-411aca585f00)
+
 
 
 Устанавливаем openvnp на локальный хост и делаем финальную проверку:
