@@ -117,3 +117,28 @@ TAP: Мостовые подключения, L2-туннели
 Выполним плейбук :
 
 https://github.com/spbsupprt/Bridges-tunnels-and-VPN/blob/main/ras.yml
+
+
+![image](https://github.com/user-attachments/assets/3c69e209-343f-4e89-9cf0-17b2906a14db)
+
+
+Устанавливаем openvnp на локальный хост и делаем финальную проверку:
+```
+root@NSK-WN-000068:~# ping -c10 10.10.10.1
+PING 10.10.10.1 (10.10.10.1) 56(84) bytes of data.
+64 bytes from 10.10.10.1: icmp_seq=1 ttl=64 time=0.682 ms
+64 bytes from 10.10.10.1: icmp_seq=2 ttl=64 time=1.127 ms
+64 bytes from 10.10.10.1: icmp_seq=3 ttl=64 time=0.823 ms
+64 bytes from 10.10.10.1: icmp_seq=4 ttl=64 time=1.954 ms
+64 bytes from 10.10.10.1: icmp_seq=5 ttl=64 time=0.742 ms
+64 bytes from 10.10.10.1: icmp_seq=6 ttl=64 time=1.335 ms
+64 bytes from 10.10.10.1: icmp_seq=7 ttl=64 time=0.598 ms
+64 bytes from 10.10.10.1: icmp_seq=8 ttl=64 time=1.876 ms
+64 bytes from 10.10.10.1: icmp_seq=9 ttl=64 time=0.711 ms
+64 bytes from 10.10.10.1: icmp_seq=10 ttl=64 time=1.462 ms
+
+--- 10.10.10.1 ping statistics ---
+10 packets transmitted, 10 received, 0% packet loss, time 9018ms
+rtt min/avg/max/mdev = 0.598/1.131/1.954/0.487 ms
+
+```
