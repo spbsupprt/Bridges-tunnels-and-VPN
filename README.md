@@ -114,3 +114,6 @@ TAP: Мостовые подключения, L2-туннели
 ### Поднять RAS на базе OpenVPN с клиентскими сертификатами, подключиться с локальной машины на ВМ
 
 
+Выполним плейбук :
+
+https://github.com/spbsupprt/Bridges-tunnels-and-VPN/blob/main/ras.yml
