@@ -37,7 +37,7 @@
 
     - name: Generate OpenVpn service
       template:
-        src: ftemplates/openvpn@.service.j2
+        src: templates/openvpn@.service.j2
         dest: /etc/systemd/system/openvpn@.service
 
     - name: Daemon reload
@@ -57,7 +57,7 @@
   tasks:
     - name: Copy static.key from management host
       copy:
-        src: "{{ playbook_dir }}/files/static.key"
+        src: templates/static.key
         dest: /etc/openvpn/static.key
         mode: 0600
 
