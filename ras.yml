@@ -66,7 +66,6 @@
         src: templates/server.conf
         dest: /etc/openvpn/server.conf
         mode: 0600
-      notify: Restart OpenVPN
     
     - name: Make client route
       copy:
