@@ -23,15 +23,15 @@
     state: directory
     mode: 0700
   loop:
-    - "{{ pki_dir }}"
-    - "{{ client_conf_dir }}"
+    - "/etc/openvpn/pki"
+    - "/etc/openvpn/client"
 
 - name: Intit PKI
   shell: |
-    {{ easy_rsa_path }}/easyrsa --batch init-pki
+    /usr/share/easy-rsa/easyrsa --batch init-pki
   args:
     chdir: /etc/openvpn
-    creates: "{{ pki_dir }}/private/ca.key"
+    creates: "/etc/openvpn/pki/private/ca.key"
   environment:
     EASYRSA_KEY_SIZE: "4096"
     EASYRSA_CA_EXPIRE: "3650"
@@ -39,27 +39,27 @@
 
 - name: Generate CA
   shell: |
-    {{ easy_rsa_path }}/easyrsa --batch build-ca nopass
+    /usr/share/easy-rsa/easyrsa --batch build-ca nopass
   args:
     chdir: /etc/openvpn
-    creates: "{{ pki_dir }}/ca.crt"
+    creates: "/etc/openvpn/pki/ca.crt"
   environment:
     EASYRSA_BATCH: "1"
 
 - name: Generate server certificates
   shell: |
-    {{ easy_rsa_path }}/easyrsa --batch build-server-full server nopass
-    {{ easy_rsa_path }}/easyrsa gen-dh
+    /usr/share/easy-rsa/easyrsa --batch build-server-full server nopass
+    /usr/share/easy-rsa/easyrsa gen-dh
   args:
     chdir: /etc/openvpn
-    creates: "{{ pki_dir }}/issued/server.crt"
+    creates: "/etc/openvpn/pki/issued/server.crt"
 
 - name: Generate client certificates
   shell: |
-    {{ easy_rsa_path }}/easyrsa --batch build-client-full client nopass
+    /usr/share/easy-rsa/easyrsa --batch build-client-full client nopass
   args:
     chdir: /etc/openvpn
-    creates: "{{ pki_dir }}/issued/client.crt"
+    creates: "/etc/openvpn/pki/issued/client.crt"
 
 - name: Generate openvpn server config
   template:
@@ -70,8 +70,8 @@
 
 - name: Make client route
   copy:
-    dest: "{{ client_conf_dir }}/{{ client_name }}"
-    content: "route {{ vpn_subnet }} {{ vpn_netmask }}"
+    dest: "/etc/openvpn/client/client"
+    content: "route 10.10.10.0 255.255.255.0"
 
 - name: Generate openvpn service
   template:
@@ -90,7 +90,7 @@
 - name: Generate client config
   template:
     src: client.ovpn.j2
-    dest: "/tmp/{{ client_name }}.ovpn"
+    dest: "/tmp/client.ovpn"
 
 - name: Send keys and configs to managed host
   fetch:
@@ -104,4 +104,4 @@
       - { src: '/etc/openvpn/pki/ca.crt', dest: '{{ playbook_dir }}/config/ca.crt' }
       - { src: '/etc/openvpn/pki/issued/client.crt', dest: '{{ playbook_dir }}/config/client.crt' }
       - { src: '/etc/openvpn/pki/private/client.key', dest: '{{ playbook_dir }}/config/client.key', mode: '0600' }
-      - { src: '/tmp/{{ client_name }}.ovpn', dest: '{{ playbook_dir }}/config/{{ client_name }}.ovpn' }
+      - { src: '/tmp/client.ovpn', dest: '{{ playbook_dir }}/config/client.ovpn' }
