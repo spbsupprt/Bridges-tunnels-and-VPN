@@ -6,7 +6,7 @@
   tasks:
     - name: Generate OpenVPN server sonfig
       template:
-        src: files/templates/server1.conf.j2
+        src: templates/server1.conf.j2
         dest: /etc/openvpn/server.conf
       vars:
         server_ip: 10.10.10.1
