@@ -63,7 +63,7 @@
     
     - name: Generate openvpn server config
       template:
-        src: templates/server.conf.j2
+        src: templates/server.conf
         dest: /etc/openvpn/server.conf
         mode: 0600
       notify: Restart OpenVPN
