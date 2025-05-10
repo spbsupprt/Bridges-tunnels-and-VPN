@@ -19,6 +19,10 @@
 
 https://github.com/spbsupprt/Bridges-tunnels-and-VPN/blob/main/tun.yml
 
+![image](https://github.com/user-attachments/assets/a848aeef-4961-4e91-80a8-f2292d8f5abf)
+
+
+
 И сделаем замер:
 
 ```
