@@ -24,7 +24,7 @@
     - name: Send static key to managed host
       fetch:
         src: /etc/openvpn/static.key
-        dest: "{{ playbook_dir }}/files/static.key"
+        dest: "{{ playbook_dir }}/static.key"
         flat: yes
 
     - name: Generate OpenVpn config
